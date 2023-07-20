@@ -1,0 +1,161 @@
+<html>
+
+<head>
+  <title>Foot Size Detection</title>
+  <link href="{{url_for('static', filename='styles/index.css')}}" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+<body>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="container">
+    <div class="wrapper">
+       <div class="image">
+          <img src="" alt="">
+       </div>
+       <div class="content">
+          <div class="icon">
+             <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="text">
+             No file chosen, yet!
+          </div>
+       </div>
+       <div id="cancel-btn">
+          <i class="fas fa-times"></i>
+       </div>
+       <div class="file-name">
+          File name here
+       </div>
+    </div>
+   <form action="/predict" method="POST" enctype="multipart/form-data">
+ <input type="file" name="file" id="file" accept="image/jpg, image/png, image/jpeg" required>
+ <label id="default-btn" for="file"> Upload Photo</label>
+ <br>
+ <input type="submit" name="submit" value="submit" required id="custom-btn" ><br>
+</form>
+ </div>
+ <br>
+ <br>
+ <br>
+  <p>{{Foot_Size}} Inches</p>
+<br>
+<table border="0">
+  <tr>
+    <td>
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender" onchange="suggestWebsite()">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </td>
+    <td>
+      <label for="brand">Brand:</label>
+      <select id="brand" name="brand" onchange="suggestWebsite()">
+        <option value="nike">Nike</option>
+        <option value="adidas">Adidas</option>
+        <option value="reebok">Reebok</option>
+      </select>
+    </td>
+  </tr>
+</table>
+
+<div id="suggestedWebsite"></div>
+
+<script>
+   const wrapper = document.querySelector(".wrapper");
+         const fileName = document.querySelector(".file-name");
+         const defaultBtn = document.querySelector("#file");
+         const customBtn = document.querySelector("#custom-btn");
+         const cancelBtn = document.querySelector("#cancel-btn i");
+         const img = document.querySelector("img");
+         let regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
+         defaultBtn.addEventListener("change", function(){
+           const file = this.files[0];
+           if(file){
+             const reader = new FileReader();
+             reader.onload = function(){
+               const result = reader.result;
+               img.src = result;
+               wrapper.classList.add("active");
+             }
+             cancelBtn.addEventListener("click", function(){
+               img.src = "";
+               wrapper.classList.remove("active");
+             })
+             reader.readAsDataURL(file);
+           }
+           if(this.value){
+             let valueStore = this.value.match(regExp);
+             fileName.textContent = valueStore;
+           }
+         });
+  function suggestWebsite() {
+    var genderSelect = document.getElementById("gender");
+    var gender = genderSelect.value;
+
+    var brandSelect = document.getElementById("brand");
+    var brand = brandSelect.value;
+
+    var div = document.getElementById("suggestedWebsite");
+    div.innerHTML = ""; // clear the div contents
+
+    if (gender === "male") {
+      // Suggest male website based on brand
+      if (brand === "nike") {
+        var websiteLink = document.createElement("a");
+        websiteLink.href = "https://www.nike.com/men";
+        websiteLink.textContent = "Nike Men's Footwear";
+
+        div.appendChild(websiteLink);
+
+      } else if (brand === "adidas") {
+        var websiteLink = document.createElement("a");
+        websiteLink.href = "https://www.adidas.com/us/men-shoes";
+        websiteLink.textContent = "Adidas Men's Footwear";
+
+        div.appendChild(websiteLink);
+
+      } else if (brand === "reebok") {
+        var websiteLink = document.createElement("a");
+        websiteLink.href = "https://www.reebok.com/us/men-shoes";
+        websiteLink.textContent = "Reebok Men's Footwear";
+
+        div.appendChild(websiteLink);
+      }
+
+    } else if (gender === "female") {
+      // Suggest female website based on brand
+      if (brand === "nike") {
+        var websiteLink = document.createElement("a");
+        websiteLink.href = "https://www.nike.com/women";
+        websiteLink.textContent = "Nike Women's Footwear";
+
+        div.appendChild(websiteLink);
+
+      } else if (brand === "adidas") {
+        var websiteLink = document.createElement("a");
+        websiteLink.href = "https://www.adidas.com/us/women-shoes";
+        websiteLink.textContent = "Adidas Women's Footwear";
+
+        div.appendChild(websiteLink);
+
+      } else if (brand === "reebok") {
+        var websiteLink = document.createElement("a");
+        websiteLink.href = "https://www.reebok.com/us/women-shoes";
+        websiteLink.textContent = "Reebok Women's Footwear";
+
+        div.appendChild(websiteLink);
+      }
+    }
+  }
+</script>
+
+
+  <a href="/sizechart" target="_blank">Foot_Size_Chart</a>
+</body>
+
+
+</html>

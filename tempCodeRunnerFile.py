@@ -1,0 +1,1 @@
+            Foot_Size = round(calcFeetSize(pcropedImg, fboundRect)*0.393701/10,2)
